@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Space, Mask, SpinLoading, Divider, Image } from 'antd-mobile'
+import { Space, Mask, SpinLoading, Divider, Image, Modal } from 'antd-mobile'
 import { useNavigate } from 'umi';
 import { request } from "@/services";
 import './index.less';
@@ -7,15 +7,21 @@ import './index.less';
 export default () => {
   let navigate = useNavigate();
   const [visible, setVisible] = useState(true);
+  const [visible_, setVisible_] = useState(false)
   const [appLink, setAppLink] = useState("")
-  setTimeout(() => { setVisible(false) }, 500);
 
   useEffect(() => {
+
+    const timer = setTimeout(() => {
+      setVisible(false);
+      setVisible_(true);
+    }, 500);
+
     request.get('http://taioassets.oss-cn-beijing.aliyuncs.com/appConfig.json').then(res => {
       const { appLink } = res;
       setAppLink(appLink)
-    })
-  },)
+    });
+  }, [])
 
   const dumpLink = (type) => {
     const link = type === "youtube" ? "https://www.youtube.com/channel/UCNz0CuIKBXpizEmn8akC42w" : "https://v.douyin.com/iNNrghAv/ 8@5.com";
@@ -49,6 +55,21 @@ export default () => {
           </Space>
         </div>
       </Mask>
+      <Modal
+        visible={visible_}
+        content={<b style={{color: 'red'}}>东东印尼语从未与任何学习机构合作，任何非东东印尼语官方途径购买的账号均无效。东东印尼语将继续和两地司法部门紧密合作，打击盗版课程。</b>}
+        closeOnAction
+        onClose={() => {
+          setVisible_(false)
+        }}
+        actions={[
+          {
+            key: 'confirm',
+            text: '我知道了',
+            primary: true,
+          },
+        ]}
+      />
       <Image
         className="logoCard"
         src='./image/login_home.png'
@@ -75,14 +96,6 @@ export default () => {
           src='./image/ios.png'
           onClick={() => downLoadApp('ios')} />
       </Space>
-      {/*<div*/}
-      {/*  className="bahasaindoLink"*/}
-      {/*  onClick={() => window.open("http://bahasaindo.cn", "_blank")}>*/}
-      {/*  <div className="icon">*/}
-      {/*    <Image src="./image/icon_card.png" alt=""/>*/}
-      {/*  </div>*/}
-      {/*  <span>单词卡</span>*/}
-      {/*</div>*/}
       <div className="bahasaindoFooter">
         <div className="friendLink">
           <span onClick={() => dumpLink('youtube')}>东东印尼语YouTube</span>
