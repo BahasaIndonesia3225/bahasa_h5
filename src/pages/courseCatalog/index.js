@@ -118,7 +118,13 @@ const courseCatalog = (props) => {
             <ul className="courseCatalogCard">
               {
                 chapters.map((item, index) => {
-                  return <li key={item.id} onClick={() => dumpDetail(item ,index)}>{item.coverArt}</li>
+                  return (
+                    <li
+                      key={item.id}
+                      onClick={() => dumpDetail(item ,index)}>
+                      {item.coverArt}
+                    </li>
+                  )
                 })
               }
             </ul>

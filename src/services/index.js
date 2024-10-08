@@ -2,6 +2,7 @@ import { Modal } from 'antd-mobile'
 import { extend } from "umi-request";
 
 export const request = extend({
+  prefix: 'prod-api',
   timeout: 10000,
   errorHandler: function (error) {
     Modal.alert({

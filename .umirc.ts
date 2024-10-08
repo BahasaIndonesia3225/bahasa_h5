@@ -1,8 +1,5 @@
 import { defineConfig } from "umi";
-
-// 是否是生产环境
-const isProductionEnvironment = true;
-const baseUrl = isProductionEnvironment ? "http://www.bahasaindo.net" : "http://bahasaindo.com";
+const baseUrl =  "http://study.bahasaindo.cn";
 
 //配置文件，包含 Umi 所有非运行时配置
 export default defineConfig({
@@ -18,16 +15,11 @@ export default defineConfig({
   },
   proxy: {
     //备用环境
-    '/business': {
-      'target': baseUrl + '/business/',
+    '/prod-api': {
+      'target': baseUrl + '/prod-api/',
       'changeOrigin': true,
-      'pathRewrite': { '^/business' : '' },
+      'pathRewrite': { '^/prod-api' : '' },
     },
-    '/file': {
-      'target': baseUrl + '/file/',
-      'changeOrigin': true,
-      'pathRewrite': { '^/file' : '' },
-    }
   },
   routes: [
     { path: "/", component: "home" },

@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
 import { useNavigate, connect } from 'umi';
-import { Modal, Form, Input, Button, AutoCenter, Checkbox, Space, Radio, Image } from 'antd-mobile';
+import { Modal, Form, Input, Button, AutoCenter, Checkbox, Space, Radio, Image, Grid } from 'antd-mobile';
 import {setCookie, getCookie, clearCookie} from '@/utils/rememberPassword';
 import { request } from '@/services';
 import './index.less';
+
+const deviceTypeOption = {
+  "1": 'android',
+  "2": 'ios',
+  "3": 'windows',
+  "4": 'h5',
+}
 
 const Login = (props) => {
   const [loading, setLoading] = useState(false);
@@ -39,13 +46,60 @@ const Login = (props) => {
     })
   }
   //登陆失败提示模态框（设备过限）
-  const handleDeviceError = () => {
+  const handleDeviceError = async (id) => {
+    //查询设备列表、数量
+    const deviceNumRes = await request.get('/business/web/member/device-count/' + id);
+    const deviceListRes = await request.get('/business/web/member/device-list/' + id);
+    const deviceNum = deviceNumRes.content;
+    const deviceList = deviceListRes.content;
+    props.dispatch({
+      type: "user/changeDeviceNum",
+      payload: deviceNum
+    })
+    props.dispatch({
+      type: "user/changeDeviceList",
+      payload: deviceList
+    })
     Modal.show({
+      title: '登陆设备已达到上限，请在常用设备登陆或联系老师',
       content: (
-        <>
-          <AutoCenter style={{ fontSize: '24px', color: '#000' }}>登陆设备已达到上限</AutoCenter>
-          <AutoCenter style={{ fontSize: '14px', color: '#ff0000' }}>请在常用设备登陆或联系老师</AutoCenter>
-        </>
+        <ul>
+          <li style={{marginBottom: '8px'}}>
+            <Grid columns={3} gap={8}>
+              <Grid.Item>
+                <div className='gridBox'>
+                  设备类型
+                </div>
+              </Grid.Item>
+              <Grid.Item span={2}>
+                <div className='gridBox'>
+                  设备ID
+                </div>
+              </Grid.Item>
+            </Grid>
+          </li>
+          {
+            deviceList.map(item => {
+              const {id, deviceType, deviceId} = item;
+              return (
+                <li key={id} style={{marginBottom: '8px'}}>
+                  <Grid columns={3} gap={8}>
+                    <Grid.Item>
+                      <div className='gridBox'>
+                        {deviceTypeOption[deviceType] || '未知'}
+                      </div>
+                    </Grid.Item>
+                    <Grid.Item span={2}>
+                      <div className='gridBox'>
+                        {deviceId}
+                      </div>
+                    </Grid.Item>
+                  </Grid>
+                </li>
+              )
+            })
+          }
+        </ul>
       ),
       closeOnAction: true,
       actions: [
@@ -57,26 +111,6 @@ const Login = (props) => {
       ],
     })
   }
-  //查询设备数量
-  const searchDeviceNum = ((memberld) => {
-    request.get('/business/web/member/device-count/' + memberld).then(res => {
-      const { content } = res;
-      props.dispatch({
-        type: "user/changeDeviceNum",
-        payload: content
-      })
-    })
-  })
-  //查询设备列表
-  const searchDeviceList = ((memberld) => {
-    request.get('/business/web/member/device-list/' + memberld).then(res => {
-      const { content } = res;
-      props.dispatch({
-        type: "user/changeDeviceList",
-        payload: content
-      })
-    })
-  })
   //表单信息
   const [form] = Form.useForm()
   const onFinish = () => {
@@ -85,35 +119,47 @@ const Login = (props) => {
     request.post('/business/web/member/signIn', {
       data: values
     }).then(res => {
-        const { success, content, message } = res;
-        setLoading(false)
-        if(success) {
-          //记住密码控制逻辑
-          const { mobile, password, autoLogin } = values;
-          if(autoLogin === '1') {
-            setCookie(mobile, password, 7)
-          }else {
-            clearCookie()
-          }
-          //设置token、水印名称
-          const { name, token, id } = content;
-          props.dispatch({
-            type: "user/changeToken",
-            payload: token
-          })
-          props.dispatch({
-            type: "user/changeWaterMarkContent",
-            payload: name
-          })
-          //查询设备列表、数量
-          searchDeviceNum(id)
-          searchDeviceList(id)
-          handleInputSuccess();
+      setLoading(false);
+      const { code, content } = res;
+
+      //登录成功
+      if(code === '00000') {
+        //记住密码控制逻辑
+        const { mobile, password, autoLogin } = values;
+        if(autoLogin === '1') {
+          setCookie(mobile, password, 7)
         }else {
-          if(message === "手机号不存在或密码错误") handleInputError();
-          if(message === "登陆设备以达到上限，请联系管理员清除不常用设备") handleDeviceError();
+          clearCookie()
         }
-      })
+        //设置token、水印名称
+        const { name, token, id } = content;
+        props.dispatch({
+          type: "user/changeToken",
+          payload: token
+        })
+        props.dispatch({
+          type: "user/changeWaterMarkContent",
+          payload: name
+        })
+        handleInputSuccess();
+      }
+
+      //登录设备超出限制
+      if(code === 'A0100') {
+        const { token, id } = content;
+        props.dispatch({
+          type: "user/changeToken",
+          payload: token
+        })
+        handleDeviceError(id);
+      }
+
+      //账号密码错误
+      if(code === 'A0004') {
+        handleInputError();
+      }
+
+    })
   }
   return (
     <div className="login">
