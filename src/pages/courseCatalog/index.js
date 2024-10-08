@@ -24,10 +24,46 @@ const coverArtList = [
 
 const courseCatalog = (props) => {
 
+  const navigate = useNavigate();
+
   //获取课程
   const [chapters, setChapters] = useState([]);
   const [isPass_, setIsPass_] = useState(0);
   const [loading, setLoading] = useState(false)
+
+  const queryUserPhone = async () => {
+    const result = await request.get('/business/web/member/getUser');
+    const { code, content } = result;
+    const { phone, deviceLimitNum } = content;
+    if(!phone) {
+      Modal.show({
+        title: '未绑定手机号码',
+        content: <span>
+          根据《中华人民共和国网络安全法》第24条有关规定，我们需要在2025年3月1日前完成所有用户的实名验证。
+          <span style={{ color: '#ff0000', fontWeight: 'bold' }}>中国大陆用户可以通过绑定+86手机号完成实名制注册。</span>
+          港澳台以及外籍人士请联系老师进行人工核验。
+        </span>,
+        closeOnAction: true,
+        actions: [
+          {
+            key: 'download',
+            text: '去绑定',
+            primary: true,
+            onClick: () => {
+              navigate("/setting", {
+                replace: false,
+              })
+            }
+          },
+          {
+            key: 'online',
+            text: '取消',
+          },
+        ],
+      })
+    }
+  }
+
   const queryChapters = () => {
     setLoading(true)
     request.get('/business/web/course/find/TYAIILon')
@@ -51,11 +87,11 @@ const courseCatalog = (props) => {
       })
   }
   useEffect(() => {
+    queryUserPhone()
     queryChapters()
   }, [])
 
   //查看章节
-  const navigate = useNavigate();
   const dumpDetail = (item, index) => {
     const {id, name, isPass, title, iconArt} = item;
     if(index === 1) {

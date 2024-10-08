@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, connect } from 'umi';
-import { Modal, Form, Input, Button, AutoCenter, Checkbox, Space, Radio, Image, Grid } from 'antd-mobile';
+import { Modal, Form, Input, Button, Checkbox, Space, Radio, Image, Grid } from 'antd-mobile';
 import {setCookie, getCookie, clearCookie} from '@/utils/rememberPassword';
 import { request } from '@/services';
 import './index.less';
@@ -24,12 +24,8 @@ const Login = (props) => {
   //登陆失败提示模态框（账户密码错误）
   const handleInputError = () => {
     Modal.show({
-      content: (
-        <>
-          <AutoCenter style={{ fontSize: '24px', color: '#000' }}>用户名或密码错误</AutoCenter>
-          <AutoCenter style={{ fontSize: '14px', color: '#ff0000' }}>如您遗忘用户名或密码，请联系老师</AutoCenter>
-        </>
-      ),
+      title: '用户名或密码错误',
+      content: '如您遗忘用户名或密码，请联系老师',
       closeOnAction: true,
       actions: [
         {
