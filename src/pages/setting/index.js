@@ -1,6 +1,6 @@
 import React, { useState, useEffect }  from 'react';
 import { useNavigate } from 'umi';
-import { List, Form, Input, Modal } from 'antd-mobile';
+import { List, Form, Input, Modal, Toast } from 'antd-mobile';
 import {request} from "@/services";
 import "./index.less"
 
@@ -26,7 +26,18 @@ export default () => {
       request.post('/business/web/member/sendUser', {
         data: values
       }).then(res => {
-        console.log(res);
+        const { success, message } = res;
+        if(!success) {
+          Toast.show({
+            icon: 'fail',
+            content: message,
+          })
+        }else {
+          Toast.show({
+            icon: 'success',
+            content: '发送成功',
+          })
+        }
       })
     })
   }
@@ -35,8 +46,20 @@ export default () => {
       request.post('/business/web/member/updateUser', {
         data: values
       }).then(res => {
-        console.log(res);
-        // setVisible(false)
+        const { success, message } = res;
+        if(!success) {
+          Toast.show({
+            icon: 'fail',
+            content: message,
+          })
+        }else {
+          Toast.show({
+            icon: 'success',
+            content: '绑定成功',
+          })
+          setVisible(false);
+          queryUserPhone();
+        }
       })
     })
   }

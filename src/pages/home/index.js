@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Space, Mask, SpinLoading, Divider, Image, Modal } from 'antd-mobile'
 import { useNavigate } from 'umi';
-import { request } from "@/services";
+import { extend } from "umi-request";
 import './index.less';
+
+const request = extend({ timeout: 10000 })
 
 export default () => {
   let navigate = useNavigate();
