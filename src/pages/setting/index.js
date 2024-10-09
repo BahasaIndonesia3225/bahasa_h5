@@ -1,13 +1,14 @@
 import React, { useState, useEffect }  from 'react';
 import { useNavigate } from 'umi';
-import { List, Form, Input, Modal, Toast } from 'antd-mobile';
+import { List, Form, Input, Modal, Toast, Button } from 'antd-mobile';
 import {request} from "@/services";
 import "./index.less"
 
 export default () => {
   let navigate = useNavigate();
   const [ phone, setPhone ] = useState("");
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [ loading, setLoading ] = useState(false);
 
   const queryUserPhone = async () => {
     const result = await request.get('/business/web/member/getUser');
@@ -23,9 +24,11 @@ export default () => {
   const [form] = Form.useForm();
   const handleGetCode = () => {
     form.validateFields(['mobile']).then(values => {
+      setLoading(true)
       request.post('/business/web/member/sendUser', {
         data: values
       }).then(res => {
+        setLoading(false)
         const { success, message } = res;
         if(!success) {
           Toast.show({
@@ -73,9 +76,12 @@ export default () => {
           clickable>
           手机号码
         </List.Item>
-        <List.Item onClick={() => {
-          navigate("/aboutUs", { replace: false })
-        }}>
+        {/*<List.Item*/}
+        {/*  onClick={() => { navigate("/peopleNearby", { replace: false }) }}*/}
+        {/*  clickable>*/}
+        {/*  附近的人*/}
+        {/*</List.Item>*/}
+        <List.Item onClick={() => { navigate("/aboutUs", { replace: false }) }}>
           关于我们
         </List.Item>
       </List>
@@ -103,7 +109,16 @@ export default () => {
             <Form.Item
               name='code'
               label='验证码'
-              extra={<a onClick={() => handleGetCode()}>发送验证码</a>}
+              extra={
+                <Button
+                  loading={loading}
+                  loadingText='发送中'
+                  onClick={() => handleGetCode()}
+                  color='primary'
+                  fill='none'>
+                  发送验证码
+                </Button>
+              }
               rules={[
                 { required: true, message: '验证码不能为空' },
                 { pattern:  /^\d{6}$/, message: '请输入正确的验证码' },

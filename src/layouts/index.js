@@ -34,7 +34,7 @@ const Layout = (props) => {
       <div className="outletContent">
         <Image className="bgImage" src='./image/img_background.png'/>
         <Outlet />
-        { (name && name !== "Selamat datang 欢迎") ?
+        { (name && !['Selamat datang 欢迎', "附近的人"].includes(name)) ?
           <WaterMark
             content={props.waterMarkContent}
             gapX={12}

@@ -31,7 +31,8 @@ export default defineConfig({
     { path: "/courseDetail", component: "courseDetail", name: "课程查看" },
     { path: "/setting", component: "setting", name: "设置" },
     { path: "/doExercises", component: "doExercises", name: "习题练习" },
-    { path: "/aboutUs", component: "aboutUs" },
+    { path: "/aboutUs", component: "aboutUs", name: "关于我们" },
+    { path: "/peopleNearby", component: "peopleNearby", name: "附近的人" },
   ],
   alias: {},
   links: [
