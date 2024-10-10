@@ -76,11 +76,11 @@ export default () => {
           clickable>
           手机号码
         </List.Item>
-        {/*<List.Item*/}
-        {/*  onClick={() => { navigate("/peopleNearby", { replace: false }) }}*/}
-        {/*  clickable>*/}
-        {/*  附近的人*/}
-        {/*</List.Item>*/}
+        <List.Item
+          onClick={() => { navigate("/peopleNearby", { replace: false }) }}
+          clickable>
+          附近的人
+        </List.Item>
         <List.Item onClick={() => { navigate("/aboutUs", { replace: false }) }}>
           关于我们
         </List.Item>
