@@ -5,7 +5,7 @@ const baseUrl =  "http://study.bahasaindo.cn";
 export default defineConfig({
   title: "东东印尼语",
   npmClient: 'pnpm',
-  outputPath: 'mobile',
+  outputPath: 'study.bahasaindo.cn',
   history: { type: 'hash' },
   hash: true,  //让 build 之后的产物包含 hash 后缀, 避免浏览器加载缓存
   mock: false, //关闭 Mock 功能
