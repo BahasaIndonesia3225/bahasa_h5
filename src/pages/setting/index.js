@@ -1,6 +1,6 @@
 import React, { useState, useEffect }  from 'react';
 import { useNavigate } from 'umi';
-import { List, Form, Input, Modal, Toast, Button } from 'antd-mobile';
+import { List, Form, Input, Modal, Toast, Button, Dialog } from 'antd-mobile';
 import {request} from "@/services";
 import "./index.less"
 
@@ -67,6 +67,13 @@ export default () => {
     })
   }
 
+  const openPeopleNearby = async () => {
+    const result = await Dialog.confirm({
+      content: '需要开启定位权限',
+    })
+    if (result) navigate("/peopleNearby", { replace: false });
+  }
+
   return (
     <div className="setting">
       <List header='偏好设置'>
@@ -77,7 +84,7 @@ export default () => {
           手机号码
         </List.Item>
         <List.Item
-          onClick={() => { navigate("/peopleNearby", { replace: false }) }}
+          onClick={() => { openPeopleNearby() }}
           clickable>
           附近的人
         </List.Item>
