@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Space, Mask, SpinLoading, Divider, Image, Modal } from 'antd-mobile'
-import styles from "./index.less";
 import AMapLoader from "@amap/amap-jsapi-loader";
+import styles from "./index.less";
 
 export default function MapContainer() {
   const [visible, setVisible] = useState(true);
@@ -34,6 +34,7 @@ export default function MapContainer() {
 
           function onComplete (data) {
             console.log('浏览器定位');
+
             setVisible(false)
             const { position } = data;
             const { lng, lat } = position;
@@ -57,14 +58,14 @@ export default function MapContainer() {
               citySearch.getLocalCity(function (status, result) {
                 if (status === 'complete' && result.info === 'OK') {
                   // 查询成功，result即为当前所在城市信息
-                  setVisible(false)
                   const { city, bounds } = result;
                   const { southWest, northEast } = bounds;
                   const southWest_lnglat = new AMap.LngLat(southWest.lng, southWest.lat);
                   const northEast_lnglat = new AMap.LngLat(northEast.lng, northEast.lat);
                   const Bounds = new AMap.Bounds(southWest_lnglat, northEast_lnglat);
-                  const position = Bounds.getCenter();
 
+                  setVisible(false)
+                  const position = Bounds.getCenter();
                   const { lng, lat } = position;
                   map = new AMap.Map("container", {
                     viewMode: "3D", // 是否为3D地图模式
@@ -77,7 +78,6 @@ export default function MapContainer() {
                     title: "我的位置",
                   });
                   map.add(marker);
-
                 }
               })
             })
