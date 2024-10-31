@@ -2,9 +2,26 @@ import React, { useState, useEffect } from 'react'
 import { Space, Mask, SpinLoading, Divider, Image, Modal } from 'antd-mobile'
 import AMapLoader from "@amap/amap-jsapi-loader";
 import styles from "./index.less";
+import {request} from "../../../services";
 
 export default function MapContainer() {
   const [visible, setVisible] = useState(true);
+
+  const updateCoordinate = (lng, lat) => {
+    const data = {lng, lat};
+    request.post('/business/web/member/updateUserLat', { data }).then(res => {
+      console.log(res)
+    })
+  }
+
+  const getAllUserCoordinate = () => {
+    const data = {page: 1, size: 3000};
+    request.post('/business/admin/member/listH5', { data }).then(res => {
+      console.log(res)
+    })
+  }
+  useEffect(() => { getAllUserCoordinate() })
+
   //初始化地图
   let map = null;
   useEffect(() => {
@@ -38,6 +55,7 @@ export default function MapContainer() {
             setVisible(false)
             const { position } = data;
             const { lng, lat } = position;
+            updateCoordinate(lng, lat)
             map = new AMap.Map("container", {
               viewMode: "3D", // 是否为3D地图模式
               zoom: 11, // 初始化地图级别
@@ -67,6 +85,7 @@ export default function MapContainer() {
                   setVisible(false)
                   const position = Bounds.getCenter();
                   const { lng, lat } = position;
+                  updateCoordinate(lng, lat)
                   map = new AMap.Map("container", {
                     viewMode: "3D", // 是否为3D地图模式
                     zoom: 11, // 初始化地图级别
@@ -105,8 +124,8 @@ export default function MapContainer() {
       </Mask>
       <div
         id="container"
-        className={styles.container}
-      ></div>
+        className={styles.container}>
+      </div>
     </>
   );
 }
