@@ -6,7 +6,7 @@ import "./index.less"
 
 const Layout = (props) => {
   const routeProps = useRouteProps()
-  const { name } = routeProps;
+  const { name, path } = routeProps;
 
   const right = (
     <div style={{ fontSize: 24 }} onClick={() => navigate("/setting", { replace: true })}>
@@ -25,7 +25,7 @@ const Layout = (props) => {
         <NavBar
           className="navBar"
           back='返回'
-          right={right}
+          right={name === 'Selamat datang 欢迎' ? <></> : right}
           onBack={goBack}>
           { name }
         </NavBar> :
