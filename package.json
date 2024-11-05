@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
+    "@vis.gl/react-google-maps": "^1.4.0",
     "antd-mobile": "^5.32.1",
     "antd-mobile-icons": "^0.3.0",
     "dayjs": "^1.11.9",

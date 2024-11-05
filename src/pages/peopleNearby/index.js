@@ -11,6 +11,10 @@ export default () => {
   const ref = useRef(null);
   const [peopleNearby, setPeopleNearby] = useState([]);
 
+  const getRandomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   const getAllUserCoordinate = async () => {
     const data = { page: 1, size: 1000 };
     const { success, content } = await request.post('/business/web/member/listH5', { data });
@@ -22,7 +26,8 @@ export default () => {
 
   return (
     <div className={styles.peopleNearby}>
-      <AMap className={styles.map} />
+      {/*<AMap className={styles.map} />*/}
+      <GoogleMaps className={styles.map} locations={peopleNearby} />
       <FloatingPanel anchors={anchors} ref={ref}>
         <List header='寻找附近的同学'>
           {peopleNearby.map((item, index) => (
@@ -37,7 +42,7 @@ export default () => {
                   height={40}
                 />
               }
-              description={'距离1000米'}>
+              description={`该同学今日已经学习${getRandomNumber(10, 100)}min`}>
               {item.name}
             </List.Item>
           ))}

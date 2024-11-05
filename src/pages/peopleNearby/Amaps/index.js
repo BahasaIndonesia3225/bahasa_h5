@@ -4,7 +4,7 @@ import AMapLoader from "@amap/amap-jsapi-loader";
 import styles from "./index.less";
 import {request} from "../../../services";
 
-export default function MapContainer() {
+export default function MapContainer(props) {
   const [visible, setVisible] = useState(true);
 
   let AMap = null;
@@ -106,11 +106,11 @@ export default function MapContainer() {
     const data = { page: 1, size: 1000 };
     const { success, content } = await request.post('/business/web/member/listH5', { data });
     if(success) {
-      content.forEach(item => {
+      content.forEach((item, index) => {
         const { lng, lat, name } = item;
         const avatarIcon = new AMap.Icon({
           size: new AMap.Size(36, 36),
-          image: 'https://api.dicebear.com/7.x/miniavs/svg?seed=1',
+          image: 'https://api.dicebear.com/7.x/miniavs/svg?seed=' + (index + 1),
           imageSize: new AMap.Size(36, 36),
           imageOffset: new AMap.Pixel(0, 0)
         });
