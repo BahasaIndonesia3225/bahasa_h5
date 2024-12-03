@@ -65,7 +65,7 @@ const courseCatalog = (props) => {
     const userInfoResponse = await request.get('/business/web/member/getUser');
     const { code, content: userInfo } = userInfoResponse;
     const { phone, userType } = userInfo;
-    if(!phone) handleBindPhone();
+    // if(!phone) handleBindPhone();
 
     //获取课程信息
     setLoading(true)
