@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, connect } from 'umi';
-import { Image, Modal, AutoCenter, Empty, Skeleton } from 'antd-mobile'
+import { Image, Modal, AutoCenter, Empty, Skeleton, NoticeBar } from 'antd-mobile'
 import { request } from '@/services';
 import './index.less';
 
@@ -120,6 +120,17 @@ const courseCatalog = (props) => {
 
   return (
     <div className="chapterCatalog">
+      <NoticeBar
+        style={{
+          marginBottom: 12,
+          borderRadius: 16,
+          '--background-color': '#ffffff',
+          '--border-color': '#ffffff'
+        }}
+        closeable
+        content="东东印尼语app iOS与安卓版本已上线，请尽快下载，手机网页版本将于明年2月停止服务。"
+        color='info'
+      />
       <div className="chapterAttention">
         <ul>
           <li>

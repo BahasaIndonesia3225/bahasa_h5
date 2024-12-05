@@ -69,14 +69,14 @@ const Login = (props) => {
               </Grid.Item>
               <Grid.Item span={2}>
                 <div className='gridBox'>
-                  设备ID
+                  设备名称
                 </div>
               </Grid.Item>
             </Grid>
           </li>
           {
             deviceList.map(item => {
-              const {id, deviceType, deviceId} = item;
+              const {id, deviceType, deviceId, deviceName} = item;
               return (
                 <li key={id} style={{marginBottom: '8px'}}>
                   <Grid columns={3} gap={8}>
@@ -87,7 +87,7 @@ const Login = (props) => {
                     </Grid.Item>
                     <Grid.Item span={2}>
                       <div className='gridBox'>
-                        {deviceId}
+                        {deviceName}
                       </div>
                     </Grid.Item>
                   </Grid>
@@ -159,9 +159,7 @@ const Login = (props) => {
   }
   return (
     <div className="login">
-      <Image
-        className="img_login"
-        src='./image/img_login.png' />
+      <Image className="img_login" src='./image/img_login.png' />
       <div className="loginContain">
         <p className="loginHeader">
           <span>登录</span>
