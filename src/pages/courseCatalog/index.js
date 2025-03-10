@@ -128,7 +128,7 @@ const courseCatalog = (props) => {
           '--border-color': '#ffffff'
         }}
         closeable
-        content="东东印尼语app iOS与安卓版本已上线，请尽快下载，手机网页版本将于明年2月停止服务。"
+        content="此页面为手机设计，如在电脑上观看，请使用东东印尼语电脑版。"
         color='info'
       />
       <div className="chapterAttention">

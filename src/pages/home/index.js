@@ -59,7 +59,7 @@ export default () => {
       </Mask>
       <Modal
         visible={visible_}
-        content={<b style={{color: 'red'}}>东东印尼语从未与任何学习机构合作，任何非东东印尼语官方途径购买的账号均无效。东东印尼语将继续和两地司法部门紧密合作，打击盗版课程。</b>}
+        content={<b style={{color: 'red'}}>根据国内《网络安全法》有关规定，观看课程需要完成实名认证。东东印尼语从未与任何学习机构合作，请勿与他人共享帐号。</b>}
         closeOnAction
         onClose={() => {
           setVisible_(false)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useLocation, connect } from 'umi';
-import { Dialog, Image, Modal, AutoCenter, Button } from 'antd-mobile'
+import { Dialog, Image, Modal, AutoCenter, Button, NoticeBar } from 'antd-mobile'
 import { EditSOutline } from 'antd-mobile-icons'
 import { request } from '@/services';
 import "./index.less"
@@ -196,6 +196,11 @@ const courseDetail = (props) => {
           src='./image/nextCourse.png'
           onClick={() => switchCourse('next')}/>
       </div>
+      <NoticeBar
+        content='如果视频无法加载（如黑屏、一直转圈或出现错误代码），请尝试切换网络重新登录后再播放。由于印尼 WiFi 质量较差，建议切换到移动流量以获得更稳定的连接。老师解答时间为早上9点至晚上7点。'
+        wrap
+        color='alert'
+      />
     </div>
   )
 }
