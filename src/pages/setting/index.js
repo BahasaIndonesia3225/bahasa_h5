@@ -17,6 +17,10 @@ export default () => {
     setPhone(phone)
   }
 
+  const openHistoryCourse = () => {
+    navigate("/historyCourse", { replace: false });
+  }
+
   useEffect(() => {
     queryUserPhone()
   }, []);
@@ -88,8 +92,13 @@ export default () => {
           clickable>
           附近的人
         </List.Item>
-        <List.Item onClick={() => { navigate("/aboutUs", { replace: false }) }}>
-          关于我们
+        {/*<List.Item onClick={() => { navigate("/aboutUs", { replace: false }) }}>*/}
+        {/*  关于我们*/}
+        {/*</List.Item>*/}
+        <List.Item
+          onClick={() => { openHistoryCourse() }}
+          clickable>
+          观看历史
         </List.Item>
       </List>
 
