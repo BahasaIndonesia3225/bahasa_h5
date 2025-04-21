@@ -8,41 +8,21 @@ import HistoryManager from '@/utils/index'
 import "./index.less"
 
 const courseDetail = (props) => {
+  let navigate = useNavigate();
+
   const stateParams = useLocation();
   const { id, title, vod } = stateParams.state;
   const [currentId, setCurrentId] = useState(id);
   const [currentTitle, setCurrentTitle] = useState(title);
   const [currentVod, setCurrentVod] = useState(vod);
-  const [player, setPlayer] = useState(null);
 
-  let navigate = useNavigate();
   const courseList = props.courseList;
   const { questionNum } = courseList.filter(item => item.vod === currentVod)[0];
   const [questionNumber, setQuestionNumber] = useState(questionNum);
 
-  if(player) {
-    player.on('ended', function() {
-      switchCourse('next')
-    })
-  }
+  const [player, setPlayer] = useState(null);
 
-  //添加到历史记录中
-  useEffect(() => {
-    const time = dayjs().format("YYYY-MM-DD HH:mm:ss");
-    const params = {
-      courseId: currentId,
-      courseName: currentTitle,
-      currentVod: currentVod,
-      time
-    }
-    request.post('/business/web/member/watchHistory', { ...params }).then(res => {
-
-    })
-
-
-
-  }, [ currentVod ] )
-
+  //随堂练习
   const doExercises = () => {
     navigate("/doExercises", {
       replace: false,
@@ -55,6 +35,7 @@ const courseDetail = (props) => {
       }
     })
   }
+
   const switchCourse = async (type) => {
     const index = courseList.findIndex(item => item.vod === currentVod);
     let newId = "";
@@ -121,6 +102,25 @@ const courseDetail = (props) => {
     setCurrentTitle(newTitle);
     setCurrentVod(newVod);
   }
+
+  useEffect(() => {
+    if(player) {
+      player.on('ended', function() {
+        switchCourse('next')
+      })
+    }
+  })
+
+  //添加到历史记录中
+  useEffect(() => {
+    const data = {
+      courseId: currentId,
+      courseName: currentTitle,
+      courseVod: currentVod,
+      time: 29182,  //观看时长
+    }
+    request.post('/business/web/member/watchHistory', { data })
+  }, [ currentVod ] )
 
   useEffect(() => {
     if(player) {

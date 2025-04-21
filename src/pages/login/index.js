@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, connect } from 'umi';
-import { Modal, Form, Input, Button, Checkbox, Space, Radio, Image, Grid } from 'antd-mobile';
+import { Modal, Form, Input, Button, Checkbox, Space, Radio, Image, Grid, Dialog, AutoCenter } from 'antd-mobile';
 import {setCookie, getCookie, clearCookie} from '@/utils/rememberPassword';
 import { request } from '@/services';
 import './index.less';
@@ -13,9 +13,13 @@ const deviceTypeOption = {
 }
 
 const Login = (props) => {
+  const {username = "", tempPassword = "", isRemember = true} = getCookie();
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState([])
-  const {username = "", tempPassword = "", isRemember = false} = getCookie();
+
+  let userAgreement_ = localStorage.getItem('userAgreement');
+  userAgreement_ = userAgreement_ ? JSON.parse(userAgreement_) : [];
+  const [userAgreement, setUserAgreement] = useState(userAgreement_);  //用户协议
+
   //登陆成功提示模态框
   let navigate = useNavigate();
   const handleInputSuccess = () => {
@@ -110,6 +114,23 @@ const Login = (props) => {
   //表单信息
   const [form] = Form.useForm()
   const onFinish = () => {
+    //判断有无勾选保密协议
+    if(userAgreement.length < 2) {
+      Dialog.alert({
+        content: (
+          <p>
+            <AutoCenter>请勾选同意购课须知、课程保密协议</AutoCenter>
+            <AutoCenter>（下面2个勾勾打上才能登陆）</AutoCenter>
+          </p>
+        ),
+        onConfirm: () => {
+          console.log('Confirmed')
+        },
+      })
+      return;
+    }
+    localStorage.setItem('userAgreement', JSON.stringify(userAgreement))
+
     setLoading(true)
     const values = form.getFieldsValue();
     request.post('/business/web/member/signIn', {
@@ -185,7 +206,6 @@ const Login = (props) => {
               color='primary'
               type='submit'
               block
-              disabled={value.length < 2}
               size='mini'>
               <div className="loginBtnCon">
                 <div className="loginBtnConLeft">
@@ -237,8 +257,8 @@ const Login = (props) => {
           </div>
         </div>
         <Checkbox.Group
-          value={value}
-          onChange={val => setValue(val)}
+          value={userAgreement}
+          onChange={val => setUserAgreement(val)}
         >
           <Space direction='vertical'>
             <Checkbox className="confidentialityCheckbox" value='one'>我是本账号持有人，且清楚课程无法退款</Checkbox>

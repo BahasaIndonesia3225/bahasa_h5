@@ -12,7 +12,7 @@ export default function MapContainer(props) {
   //地图加载成功
   const onLoadMap = () => {
     setIsLoading(false)
-    // getLocation()
+    getLocation()
   }
 
   //获取用户位置
@@ -39,7 +39,11 @@ export default function MapContainer(props) {
       })
     }
     //WGS84坐标
-    navigator.geolocation.getCurrentPosition(success, error, options);
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    }else {
+      error()
+    }
   }
 
   //位置信息更新
