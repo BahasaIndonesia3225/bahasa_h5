@@ -33,6 +33,7 @@ export default defineConfig({
     { path: "/doExercises", component: "doExercises", name: "习题练习" },
     { path: "/aboutUs", component: "aboutUs", name: "关于我们" },
     { path: "/peopleNearby", component: "peopleNearby", name: "附近的人" },
+    { path: "/historyCourse", component: "historyCourse", name: "观看历史" },
   ],
   alias: {},
   links: [

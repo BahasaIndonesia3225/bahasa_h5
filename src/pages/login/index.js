@@ -241,7 +241,7 @@ const Login = (props) => {
           onChange={val => setValue(val)}
         >
           <Space direction='vertical'>
-            <Checkbox className="confidentialityCheckbox" value='one'>我是本帐号持有人</Checkbox>
+            <Checkbox className="confidentialityCheckbox" value='one'>我是本账号持有人，且清楚课程无法退款</Checkbox>
             <Checkbox className="confidentialityCheckbox" value='two'>我同意并遵守《课程保密协议》</Checkbox>
           </Space>
         </Checkbox.Group>

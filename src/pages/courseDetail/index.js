@@ -3,6 +3,8 @@ import { useNavigate, useLocation, connect } from 'umi';
 import { Dialog, Image, Modal, AutoCenter, Button, NoticeBar } from 'antd-mobile'
 import { EditSOutline } from 'antd-mobile-icons'
 import { request } from '@/services';
+import dayjs from 'dayjs'
+import HistoryManager from '@/utils/index'
 import "./index.less"
 
 const courseDetail = (props) => {
@@ -23,6 +25,23 @@ const courseDetail = (props) => {
       switchCourse('next')
     })
   }
+
+  //添加到历史记录中
+  useEffect(() => {
+    const time = dayjs().format("YYYY-MM-DD HH:mm:ss");
+    const params = {
+      courseId: currentId,
+      courseName: currentTitle,
+      currentVod: currentVod,
+      time
+    }
+    request.post('/business/web/member/watchHistory', { ...params }).then(res => {
+
+    })
+
+
+
+  }, [ currentVod ] )
 
   const doExercises = () => {
     navigate("/doExercises", {

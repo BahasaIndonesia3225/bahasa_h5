@@ -17,6 +17,10 @@ export default () => {
     setPhone(phone)
   }
 
+  const openHistoryCourse = () => {
+    navigate("/historyCourse", { replace: false });
+  }
+
   useEffect(() => {
     queryUserPhone()
   }, []);
@@ -68,21 +72,21 @@ export default () => {
   }
 
   const openPeopleNearby = async () => {
-    // const result = await Dialog.confirm({
-    //   content: '需要开启定位权限',
-    // })
-    navigate("/peopleNearby", {replace: false});
+    const result = await Dialog.confirm({
+      content: '需要开启定位权限',
+    })
+    if (result) navigate("/peopleNearby", { replace: false });
   }
 
   return (
     <div className="setting">
       <List header='偏好设置'>
-        {/*<List.Item*/}
-        {/*  onClick={() => { setVisible(true) }}*/}
-        {/*  extra={phone || '未绑定'}*/}
-        {/*  clickable>*/}
-        {/*  手机号码*/}
-        {/*</List.Item>*/}
+        <List.Item
+          onClick={() => { setVisible(true) }}
+          extra={phone || '未绑定'}
+          clickable>
+          手机号码
+        </List.Item>
         <List.Item
           onClick={() => { openPeopleNearby() }}
           clickable>
@@ -91,6 +95,11 @@ export default () => {
         {/*<List.Item onClick={() => { navigate("/aboutUs", { replace: false }) }}>*/}
         {/*  关于我们*/}
         {/*</List.Item>*/}
+        <List.Item
+          onClick={() => { openHistoryCourse() }}
+          clickable>
+          观看历史
+        </List.Item>
       </List>
 
       <Modal
