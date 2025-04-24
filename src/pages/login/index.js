@@ -261,8 +261,14 @@ const Login = (props) => {
           onChange={val => setUserAgreement(val)}
         >
           <Space direction='vertical'>
-            <Checkbox className="confidentialityCheckbox" value='one'>我是本账号持有人，且清楚课程无法退款</Checkbox>
-            <Checkbox className="confidentialityCheckbox" value='two'>我同意并遵守《课程保密协议》</Checkbox>
+            <Checkbox className="confidentialityCheckbox" value='one'>
+              我是本账号持有人，且清楚课程无法退款
+            </Checkbox>
+            <Checkbox className="confidentialityCheckbox" value='two'>
+              我同意并遵守《课程保密协议》
+              {/*<a href="./doc/useTerms.pdf" rel="noopener noreferrer">《用户协议（EULA）》</a>*/}
+              {/*<a href="./doc/privacyPolicy.pdf" rel="noopener noreferrer">《隐私政策》</a>*/}
+            </Checkbox>
           </Space>
         </Checkbox.Group>
       </div>
