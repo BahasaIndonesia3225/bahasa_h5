@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, connect } from 'umi';
-import { Image, Modal, AutoCenter, Empty, Skeleton, NoticeBar, FloatingBubble, Tag } from 'antd-mobile';
+import { Image, Modal, AutoCenter, Empty, Skeleton, NoticeBar, FloatingBubble, Tag, Toast, Button } from 'antd-mobile';
 import { ClockCircleOutline } from 'antd-mobile-icons';
 import { request } from '@/services';
 import './index.less';
@@ -109,6 +109,20 @@ const courseCatalog = (props) => {
     setRemarks(content.remark);
   }
 
+  //复制公告
+  const handleCopy = () => {
+    const el = document.createElement('textarea');
+    el.value = remarks;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    Toast.show({
+      icon: 'success',
+      content: '复制成功',
+    })
+  }
+
   useEffect(() => {
     getRemarks();
     queryChapters();
@@ -161,23 +175,19 @@ const courseCatalog = (props) => {
           '--background-color': '#ffffff',
           '--border-color': '#ffffff'
         }}
+        extra={
+          <Button
+            onClick={() => handleCopy()}
+            size='mini'
+            color='primary'
+            fill='outline'>
+            复制
+          </Button>
+        }
         closeable={false}
         content={remarks}
         color='info'
-      />
-      <NoticeBar
-        onClick={() => {
-          window.open('http://studypc.bahasaindo.net')
-        }}
-        style={{
-          marginBottom: 12,
-          borderRadius: 16,
-          '--background-color': '#ffffff',
-          '--border-color': '#ffffff'
-        }}
-        closeable
-        content="此页面为手机设计，点我可进入电脑专用版本。"
-        color='info'
+        wrap
       />
       <div className="chapterAttention">
         <ul>

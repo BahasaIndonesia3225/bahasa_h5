@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, connect } from 'umi';
-import { Modal, Form, Input, Button, Checkbox, Space, Radio, Image, Grid, Dialog, AutoCenter } from 'antd-mobile';
+import { Modal, Form, Input, Button, Checkbox, Space, Radio, Image, Grid, Dialog, AutoCenter, Toast } from 'antd-mobile';
 import {setCookie, getCookie, clearCookie} from '@/utils/rememberPassword';
 import { request } from '@/services';
 import './index.less';
@@ -113,7 +113,7 @@ const Login = (props) => {
   }
   //表单信息
   const [form] = Form.useForm()
-  const onFinish = () => {
+  const onFinish = async () => {
     //判断有无勾选保密协议
     if(userAgreement.length < 2) {
       Dialog.alert({
@@ -130,57 +130,64 @@ const Login = (props) => {
       return;
     }
     localStorage.setItem('userAgreement', JSON.stringify(userAgreement))
-
+    //请求登录接口
     setLoading(true)
     const values = form.getFieldsValue();
-    request.post('/business/web/member/signIn', {
-      data: values
-    }).then(res => {
-      setLoading(false);
-      const { code, content } = res;
-
-      //登录成功
-      if(code === '00000') {
-        //记住密码控制逻辑
-        const { mobile, password, autoLogin } = values;
-        if(autoLogin === '1') {
-          setCookie(mobile, password, 7)
-        }else {
-          clearCookie()
-        }
-        //设置token、水印名称
-        const { name, token, id } = content;
-        props.dispatch({
-          type: "user/changeToken",
-          payload: token
-        })
-        props.dispatch({
-          type: "user/changeWaterMarkContent",
-          payload: name
-        })
-        handleInputSuccess();
-      }
-
+    const res = await request.post('/business/web/member/signIn', { data: values });
+    setLoading(false);
+    const { code, content } = res;
+    //判断登录情况
+    if(code === 'A0004') handleInputError();  //账号密码错误
+    if(code === 'A0100') {
       //登录设备超出限制
-      if(code === 'A0100') {
-        const { token, id } = content;
-        props.dispatch({
-          type: "user/changeToken",
-          payload: token
+      const { token, id } = content;
+      props.dispatch({
+        type: "user/changeToken",
+        payload: token
+      })
+      handleDeviceError(id);
+    }
+    //登录成功
+    if(code === '00000') {
+      //记住密码控制逻辑
+      const {mobile, password, autoLogin} = values;
+      if (autoLogin === '1') {
+        setCookie(mobile, password, 7)
+      } else {
+        clearCookie()
+      }
+      //设置token、水印名称
+      const {name, token, id} = content;
+      props.dispatch({
+        type: "user/changeToken",
+        payload: token
+      })
+      props.dispatch({
+        type: "user/changeWaterMarkContent",
+        payload: name
+      })
+      //判断是否开通网页登录权限(1无限制/2只能扫码登录PC/3无法登录)
+      const userInfoResponse = await request.get('/business/web/member/getUser');
+      const {content: userInfo} = userInfoResponse;
+      const {loginType} = userInfo;
+      if(loginType === 1) {
+        handleInputSuccess();
+      }else if(loginType === 2) {
+        Toast.show({
+          icon: 'fail',
+          content: '请在电脑端扫码登录',
         })
-        handleDeviceError(id);
+      }else if(loginType === 3) {
+        Toast.show({
+          icon: 'fail',
+          content: '只能在APP端登录',
+        })
       }
-
-      //账号密码错误
-      if(code === 'A0004') {
-        handleInputError();
-      }
-
-    })
+    }
   }
   return (
     <div className="login">
-      <Image className="img_login" src='./image/img_login.png' />
+      <Image className="img_login" src='./image/img_login.png'/>
       <div className="loginContain">
         <p className="loginHeader">
           <span>登录</span>
