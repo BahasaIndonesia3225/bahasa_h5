@@ -6,7 +6,9 @@
 /src/.umi-production
 /src/.umi-test
 /dist
+/bahasaindo.net
 /study.bahasaindo.cn
+/www.bahasaindo.com
 .swc
 
 # Log files
@@ -23,3 +25,4 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+*.zip

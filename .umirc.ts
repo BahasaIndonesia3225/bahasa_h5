@@ -1,12 +1,18 @@
 import { defineConfig } from "umi";
+
 const baseUrl =  "http://study.bahasaindo.cn";
+// 环境与目录映射关系
+const ENV_OUTPUT_MAP = {
+  Hongkong: "bahasaindo.net",
+  Mainland: "study.bahasaindo.cn",
+  Taiwan: "www.bahasaindo.com"
+};
 
 //配置文件，包含 Umi 所有非运行时配置
 export default defineConfig({
   title: "东东印尼语",
   npmClient: 'pnpm',
-  outputPath: 'study.bahasaindo.cn',
-  // outputPath: 'bahasaindo.net',
+  outputPath: ENV_OUTPUT_MAP[process.env.APP_ENV],
   history: { type: 'hash' },
   hash: true,  //让 build 之后的产物包含 hash 后缀, 避免浏览器加载缓存
   mock: false, //关闭 Mock 功能

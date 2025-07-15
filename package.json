@@ -3,7 +3,9 @@
   "author": "liyujian3225 <icanflyanywhere@126.com>",
   "scripts": {
     "dev": "umi dev",
-    "build": "umi build",
+    "build:Hongkong": "cross-env APP_ENV=Hongkong umi build && node ./deploy.config.js Hongkong",
+    "build:Mainland": "cross-env APP_ENV=Mainland umi build && node ./deploy.config.js Mainland",
+    "build:Taiwan": "cross-env APP_ENV=Taiwan umi build && node ./deploy.config.js Taiwan",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev"
@@ -14,6 +16,7 @@
     "antd-mobile": "^5.32.1",
     "antd-mobile-icons": "^0.3.0",
     "dayjs": "^1.11.9",
+    "node-notifier": "^10.0.1",
     "react-device-detect": "^2.2.3",
     "umi": "^4.0.79"
   },
@@ -21,6 +24,8 @@
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "@umijs/plugins": "^4.0.81",
+    "cross-env": "^7.0.3",
+    "ssh2-sftp-client": "^12.0.1",
     "typescript": "^5.2.2",
     "umi-request": "^1.4.0"
   }

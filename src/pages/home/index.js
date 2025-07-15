@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Space, Mask, SpinLoading, Divider, Image, Modal } from 'antd-mobile'
+import { Space, Mask, SpinLoading, Divider, Image, Modal, Button, ActionSheet } from 'antd-mobile'
 import { useNavigate } from 'umi';
 import { extend } from "umi-request";
 import './index.less';
@@ -13,12 +13,10 @@ export default () => {
   const [appLink, setAppLink] = useState("")
 
   useEffect(() => {
-
     const timer = setTimeout(() => {
       setVisible(false);
       setVisible_(true);
     }, 500);
-
     request.get('http://taioassets.oss-cn-beijing.aliyuncs.com/appConfig.json').then(res => {
       const { appLink } = res;
       setAppLink(appLink)
@@ -43,6 +41,35 @@ export default () => {
     if(isAndroid) {
       window.open(url)
     }else if(isiOS) {
+      window.location.href = url;
+    }
+  }
+
+  //线路切换功能
+  const [lineVisible, setLineVisible] = useState(false);
+  const lineText = () => {
+    const url = window.location.href;
+    if (url.indexOf("bahasaindo.net") > -1) {
+      return "香港线路";
+    }else if( url.indexOf("study.bahasaindo.cn") > -1) {
+      return "大陆线路";
+    }else {
+      return '台湾线路';
+    }
+  };
+  const lineList = [
+    { key: 'line1', text: '香港线路', url: "http://bahasaindo.net/" },
+    { key: 'line2', text: '大陆线路', url: "http://study.bahasaindo.cn/" },
+    { key: 'line3', text: '台湾线路', url: "http://bahasaindo.com/" },
+  ];
+  const switchLine = (data) => {
+    const { text, url } = data;
+    try {
+      // 优先使用双保险策略
+      history.replaceState(null, "", url);
+      window.location.replace(url);
+    } catch (e) {
+      // 兼容异常情况
       window.location.href = url;
     }
   }
@@ -72,6 +99,20 @@ export default () => {
           },
         ]}
       />
+      <div className="lineSwitch">
+        <Button
+          color='primary'
+          fill='none'
+          onClick={() => setLineVisible(true)}>{lineText()}</Button>
+        <ActionSheet
+          extra='请在老师的指导下切换线路'
+          closeOnAction={true}
+          visible={lineVisible}
+          actions={lineList}
+          onAction={(key) => switchLine(key)}
+          onClose={() => setLineVisible(false)}
+        />
+      </div>
       <Image
         className="logoCard"
         src='./image/login_home.png'
