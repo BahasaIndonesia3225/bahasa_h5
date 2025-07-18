@@ -124,9 +124,14 @@ export default () => {
         onClick={() => navigate("/login", { replace: false })}
       />
       <Image
-        style={{marginBottom: 60}}
+        style={{marginBottom: 16}}
         src='./image/loginProtocol.png'
         onClick={() => window.open("https://taioassets.oss-cn-beijing.aliyuncs.com/Pdfs/%E4%B8%9C%E4%B8%9C%E5%8D%B0%E5%B0%BC%E8%AF%AD%E7%94%A8%E6%88%B7%E4%BD%BF%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%8D%8F%E8%AE%AE.pdf", "_blank")}
+      />
+      <Image
+        style={{marginBottom: 16}}
+        src='https://taioassets.oss-cn-beijing.aliyuncs.com/Pics/DongIndonesiaVocabulary/merchantLogo.png'
+        onClick={() => window.open("http://makandong.com", "_blank")}
       />
       <Divider>下载东东印尼语App</Divider>
       <Space className="downLoadBtn" style={{ '--gap': '8px' }} justify="center" block={true}>

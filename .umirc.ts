@@ -1,7 +1,7 @@
 import { defineConfig } from "umi";
 
 const { serverConfig } = require('./server.config');
-const config = serverConfig[process.env.APP_ENV];
+const config = serverConfig[process.env.APP_ENV || 'Hongkong'];
 const { outputPath } = config;
 
 const baseUrl =  "http://study.bahasaindo.cn";
