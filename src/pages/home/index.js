@@ -23,27 +23,15 @@ export default () => {
     });
   }, [])
 
-  const dumpLink = (type) => {
-    const link = type === "youtube" ? "https://www.youtube.com/channel/UCNz0CuIKBXpizEmn8akC42w" : "https://v.douyin.com/iNNrghAv/ 8@5.com";
-    window.open(link, "_blank")
-  }
-
-  const downLoadApp = (type) => {
-    let url = "";
-    if(type === "android") {
-      url = appLink
-    }else {
-      url = 'https://apps.apple.com/cn/app/bahasadong/id6502833636'
-    }
-    var user = navigator.userAgent;
-    var isAndroid = user.indexOf("Android") > -1 || user.indexOf("Adr") > -1;
-    var isiOS = !!user.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-    if(isAndroid) {
-      window.open(url)
-    }else if(isiOS) {
-      window.location.href = url;
-    }
-  }
+  //开屏公告
+  const [remark, setRemark] = useState("");
+  useEffect(() => {
+    request.post('/prod-api/business/web/notice/peacock', {}).then(res => {
+      const { content } = res;
+      const { remark } = content;
+      setRemark(remark);
+    })
+  }, [])
 
   //线路切换功能
   const [lineVisible, setLineVisible] = useState(false);
@@ -74,6 +62,30 @@ export default () => {
     }
   }
 
+  //跳转 YouTube、抖音
+  const dumpLink = (type) => {
+    const link = type === "youtube" ? "https://www.youtube.com/channel/UCNz0CuIKBXpizEmn8akC42w" : "https://v.douyin.com/iNNrghAv/ 8@5.com";
+    window.open(link, "_blank")
+  }
+
+  //下载APP
+  const downLoadApp = (type) => {
+    let url = "";
+    if(type === "android") {
+      url = appLink
+    }else {
+      url = 'https://apps.apple.com/cn/app/bahasadong/id6502833636'
+    }
+    var user = navigator.userAgent;
+    var isAndroid = user.indexOf("Android") > -1 || user.indexOf("Adr") > -1;
+    var isiOS = !!user.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    if(isAndroid) {
+      window.open(url)
+    }else if(isiOS) {
+      window.location.href = url;
+    }
+  }
+
   return (
     <div className="home">
       <Mask opacity='thick' visible={visible}>
@@ -86,7 +98,15 @@ export default () => {
       </Mask>
       <Modal
         visible={visible_}
-        content={<b style={{color: 'red'}}>根据国内《网络安全法》有关规定，观看课程需要完成实名认证。东东印尼语从未与任何学习机构合作，请勿与他人共享帐号。</b>}
+        content={
+          <div>
+            <b style={{color: 'red'}}>
+              根据国内《网络安全法》有关规定，观看课程需要完成实名认证。东东印尼语从未与任何学习机构合作，请勿与他人共享帐号。
+            </b>
+            <Divider />
+            <span>{ remark }</span>
+          </div>
+        }
         closeOnAction
         onClose={() => {
           setVisible_(false)

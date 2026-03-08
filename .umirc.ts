@@ -4,7 +4,7 @@ const { serverConfig } = require('./server.config');
 const config = serverConfig[process.env.APP_ENV || 'Hongkong'];
 const { outputPath } = config;
 
-const baseUrl =  "http://study.bahasaindo.cn";
+const baseUrl =  "http://bahasaindo.com";
 
 //配置文件，包含 Umi 所有非运行时配置
 export default defineConfig({
@@ -30,6 +30,7 @@ export default defineConfig({
     { path: "/", component: "home" },
     { path: "/home", component: "home" },
     { path: "/login", component: "login", name: "Selamat datang 欢迎" },
+    { path: "/wxCheck", component: "wxCheck", name: "微信校验" },
     { path: "/courseCatalog", component: "courseCatalog", name: "课程分类" },
     { path: "/courseList", component: "courseList", name: "课程目录" },
     { path: "/confidentiality", component: "confidentiality", name: "保密协议" },

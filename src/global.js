@@ -7,11 +7,11 @@ if (isMobileOnly) {}
 if (isMobile) {}
 if (isTablet) {
   // 平板(iPad, 安卓平板...)
-  window.location.href = 'http://studypc.bahasaindo.cn/';
+  // window.location.href = 'http://studypc.bahasaindo.cn/';
   // window.location.href = 'http://studypc.bahasaindo.net';
 }
 if (isDesktop) {
   // 桌面端浏览器
-  window.location.href = 'http://studypc.bahasaindo.cn/';
+  // window.location.href = 'http://studypc.bahasaindo.cn/';
   // window.location.href = 'http://studypc.bahasaindo.net';
 }

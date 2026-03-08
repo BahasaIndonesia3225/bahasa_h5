@@ -29,37 +29,33 @@ const coverArtList = [
 const courseCatalog = (props) => {
   const navigate = useNavigate();
 
+  //获取公告
+  useEffect(() => { getRemarks() }, [])
+  const [remarks, setRemarks] = useState("");
+  const getRemarks = async () => {
+    const remarkResponse = await request.post('/business/web/notice/all');
+    const {content} = remarkResponse;
+    setRemarks(content.remark);
+  }
+  //复制公告
+  const handleCopy = () => {
+    const el = document.createElement('textarea');
+    el.value = remarks;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    Toast.show({
+      icon: 'success',
+      content: '复制成功',
+    })
+  }
+
   const [chapters, setChapters] = useState([]);
   const [isPass_, setIsPass_] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const handleBindPhone = () => {
-    Modal.show({
-      title: '未绑定手机号码',
-      content: <span>
-          根据《中华人民共和国网络安全法》第24条有关规定，我们需要在2025年3月1日前完成所有用户的实名验证。
-          <span style={{color: '#ff0000', fontWeight: 'bold'}}>中国大陆用户可以通过绑定+86手机号完成实名制注册。</span>
-          港澳台以及外籍人士请联系老师进行人工核验。
-        </span>,
-      closeOnAction: true,
-      actions: [
-        {
-          key: 'download',
-          text: '去绑定',
-          primary: true,
-          onClick: () => {
-            navigate("/setting", {
-              replace: false,
-            })
-          }
-        },
-        {
-          key: 'online',
-          text: '取消',
-        },
-      ],
-    })
-  }
+
 
   const licenseTypeList = [
     { name: "个人授权", value: 1 },
@@ -101,32 +97,37 @@ const courseCatalog = (props) => {
     setLoading(false)
   }
 
-  //获取公告
-  const [remarks, setRemarks] = useState("");
-  const getRemarks = async () => {
-    const remarkResponse = await request.post('/business/web/notice/all');
-    const {content} = remarkResponse;
-    setRemarks(content.remark);
-  }
-
-  //复制公告
-  const handleCopy = () => {
-    const el = document.createElement('textarea');
-    el.value = remarks;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-    Toast.show({
-      icon: 'success',
-      content: '复制成功',
-    })
-  }
-
   useEffect(() => {
-    getRemarks();
     queryChapters();
   }, [])
+
+  const handleBindPhone = () => {
+    Modal.show({
+      title: '未绑定手机号码',
+      content: <span>
+          根据《中华人民共和国网络安全法》第24条有关规定，我们需要在2025年3月1日前完成所有用户的实名验证。
+          <span style={{color: '#ff0000', fontWeight: 'bold'}}>中国大陆用户可以通过绑定+86手机号完成实名制注册。</span>
+          港澳台以及外籍人士请联系老师进行人工核验。
+        </span>,
+      closeOnAction: true,
+      actions: [
+        {
+          key: 'download',
+          text: '去绑定',
+          primary: true,
+          onClick: () => {
+            navigate("/setting", {
+              replace: false,
+            })
+          }
+        },
+        {
+          key: 'online',
+          text: '取消',
+        },
+      ],
+    })
+  }
 
   //查看章节
   const dumpDetail = (item, index) => {
@@ -157,17 +158,6 @@ const courseCatalog = (props) => {
 
   return (
     <div className="chapterCatalog">
-      <FloatingBubble
-        style={{
-          '--initial-position-bottom': '24px',
-          '--initial-position-right': '24px',
-          '--edge-distance': '24px',
-        }}
-      >
-        <ClockCircleOutline
-          onClick={() => openHistoryCourse()}
-          fontSize={32}/>
-      </FloatingBubble>
       <NoticeBar
         style={{
           marginBottom: 12,
@@ -243,6 +233,25 @@ const courseCatalog = (props) => {
           ) : <Empty description='暂无数据' style={{marginTop: '50%'}}/>
         )
       }
+
+
+
+
+
+
+      <FloatingBubble
+        style={{
+          '--initial-position-bottom': '24px',
+          '--initial-position-right': '24px',
+          '--edge-distance': '24px',
+        }}
+      >
+        <ClockCircleOutline
+          onClick={() => openHistoryCourse()}
+          fontSize={32}/>
+      </FloatingBubble>
+
+
     </div>
   )
 }

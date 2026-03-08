@@ -22,8 +22,15 @@ const Login = (props) => {
 
   //登陆成功提示模态框
   let navigate = useNavigate();
-  const handleInputSuccess = () => {
-    navigate("/courseCatalog", { replace: true });
+  const handleInputSuccess = (wxFlag) => {
+
+    console.log(wxFlag)
+
+    if(wxFlag === "0") {
+      navigate("/courseCatalog", { replace: true });
+    }else if(wxFlag === "1") {
+      navigate("/wxCheck", { replace: true });
+    }
   }
   //登陆失败提示模态框（账户密码错误）
   const handleInputError = () => {
@@ -168,10 +175,10 @@ const Login = (props) => {
       })
       //判断是否开通网页登录权限(1无限制/2只能扫码登录PC/3无法登录)
       const userInfoResponse = await request.get('/business/web/member/getUser');
-      const {content: userInfo} = userInfoResponse;
-      const {loginType} = userInfo;
+      const { content: userInfo } = userInfoResponse;
+      const { loginType, wxFlag, registerTime } = userInfo;
       if(loginType === 1) {
-        handleInputSuccess();
+        handleInputSuccess(wxFlag);
       }else if(loginType === 2) {
         Toast.show({
           icon: 'fail',
