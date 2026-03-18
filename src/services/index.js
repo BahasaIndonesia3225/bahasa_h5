@@ -3,7 +3,7 @@ import { extend } from "umi-request";
 
 export const request = extend({
   prefix: 'prod-api',
-  timeout: 10000,
+  timeout: 1000 * 10,
   errorHandler: function (error) {
     Modal.alert({
       confirmText: '好的，我不会与他人分享我的帐号。我只是在自己的新设备登陆。',
