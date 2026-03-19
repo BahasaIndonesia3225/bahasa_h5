@@ -22,15 +22,8 @@ const Login = (props) => {
 
   //登陆成功提示模态框
   let navigate = useNavigate();
-  const handleInputSuccess = (wxFlag) => {
-
-    console.log(wxFlag)
-
-    if(wxFlag === "0") {
-      navigate("/courseCatalog", { replace: true });
-    }else if(wxFlag === "1") {
-      navigate("/wxCheck", { replace: true });
-    }
+  const handleInputSuccess = () => {
+    navigate("/courseCatalog", { replace: true });
   }
   //登陆失败提示模态框（账户密码错误）
   const handleInputError = () => {
@@ -178,7 +171,7 @@ const Login = (props) => {
       const { content: userInfo } = userInfoResponse;
       const { loginType, wxFlag, registerTime } = userInfo;
       if(loginType === 1) {
-        handleInputSuccess(wxFlag);
+        handleInputSuccess();
       }else if(loginType === 2) {
         Toast.show({
           icon: 'fail',
