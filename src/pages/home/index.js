@@ -24,14 +24,14 @@ export default () => {
   }, [])
 
   //开屏公告
-  const [remark, setRemark] = useState("");
-  useEffect(() => {
-    request.post('/prod-api/business/web/notice/peacock', {}).then(res => {
-      const { content } = res;
-      const { remark } = content;
-      setRemark(remark);
-    })
-  }, [])
+  const [remark, setRemark] = useState("同学们大家好！东东印尼语其中一个微信暂时无法回复信息，如果遇到疑问无法联系老师，请在抖音联系东东印尼语。我们会即使为你提供解答。");
+  // useEffect(() => {
+  //   request.post('/prod-api/business/web/notice/peacock', {}).then(res => {
+  //     const { content } = res;
+  //     const { remark } = content;
+  //     setRemark(remark);
+  //   })
+  // }, [])
 
   //线路切换功能
   const [lineVisible, setLineVisible] = useState(false);
@@ -100,11 +100,11 @@ export default () => {
         visible={visible_}
         content={
           <div>
-            <b style={{color: 'red'}}>
-              根据国内《网络安全法》有关规定，观看课程需要完成实名认证。东东印尼语从未与任何学习机构合作，请勿与他人共享帐号。
-            </b>
-            <Divider />
-            <span>{ remark }</span>
+            {/*<b style={{color: 'red'}}>*/}
+            {/*  根据国内《网络安全法》有关规定，观看课程需要完成实名认证。东东印尼语从未与任何学习机构合作，请勿与他人共享帐号。*/}
+            {/*</b>*/}
+            {/*<Divider />*/}
+            <b style={{color: 'red'}}>{ remark }</b>
           </div>
         }
         closeOnAction

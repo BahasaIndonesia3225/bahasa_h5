@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavBar, Image, WaterMark } from 'antd-mobile'
+import { NavBar, Image, WaterMark, NoticeBar, Space } from 'antd-mobile'
 import { useNavigate, useRouteProps, Outlet, connect } from 'umi';
 import { SetOutline } from 'antd-mobile-icons'
 import "./index.less"
@@ -32,6 +32,9 @@ const Layout = (props) => {
         <></>
       }
       <div className="outletContent">
+        <NoticeBar
+          content='东东印尼语其中一个微信无法使用，同学们如果遇到学习疑问，请在抖音和我们联系，我们会尽快处理。'
+          color='error' />
         <Image className="bgImage" src='./image/img_background.png'/>
         <Outlet />
         { (name && !['Selamat datang 欢迎', "附近的人"].includes(name)) ?

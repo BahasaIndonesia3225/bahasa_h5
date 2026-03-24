@@ -61,7 +61,7 @@ const Login = (props) => {
       payload: deviceList
     })
     Modal.show({
-      title: '登陆设备已达到上限，请在常用设备登陆或联系老师',
+      title: '登陆设备已达到上线，请在抖音联系老师，我们为您处理',
       content: (
         <ul>
           <li style={{marginBottom: '8px'}}>
